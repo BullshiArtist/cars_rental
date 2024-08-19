@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/reservation.css">
+</head>
+
+<body>
+
+<!--
+  - #HEADER
+-->
+
+<header class="header" data-header>
+    <div class="container">
+
+        <div class="overlay" data-overlay></div>
+
+        <a href="/go_index" class="logo">
+            <img src="/static/images/logo.svg" alt="logo" width="42" height="42">
+        </a>
+
+        <nav class="navbar" data-navbar>
+            <ul class="navbar-list">
+
+                <li>
+                    <a href="/home" class="navbar-link" data-nav-link>Home</a>
+                </li>
+
+                <li>
+                    <a href="/explore_cars" class="navbar-link" data-nav-link>Explore cars</a>
+                </li>
+
+                <li>
+                    <a href="/reservation" class="navbar-link" data-nav-link>Reservation</a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn" aria-labelledby="aria-label-txt">
+                <span id="aria-label-txt">Log out</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+    <div class="reservation-container" id="reservationContainer">
+        <!-- Reservations will be dynamically loaded here -->
+    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Fetch reservations from the backend
+        fetch('/get_reservations')  // Call the new JSON API endpoint
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('reservationContainer');
+                container.innerHTML = '';
+
+                data.forEach(reservation => {
+                    const card = document.createElement('div');
+                    card.classList.add('reservation-card');
+
+                    // Create car description and reservation details
+                    const details = `
+                    <div class="reservation-details">
+                        <p><strong>Car:</strong> ${reservation.brand} ${reservation.model} (${reservation.year})</p>
+                        <p><strong>Color:</strong> ${reservation.color}</p>
+                        <p><strong>Start Date:</strong> ${reservation.start_date}</p>
+                        <p><strong>End Date:</strong> ${reservation.end_date}</p>
+                        <p class="reservation-status"><strong>Status:</strong> ${reservation.status}</p>
+                    </div>
+                `;
+
+                    card.innerHTML = details;
+
+                    const button = document.createElement('button');
+                    if (reservation.status === 'Confirmed') {
+                        button.textContent = 'Cancel Reservation';
+                    } else if (reservation.status === 'Cancelled') {
+                        button.textContent = 'Cancelled';
+                    } else if (reservation.status === 'Finished') {
+                        button.textContent = 'Finished';
+                    }
+                    button.classList.add('cancel-btn');
+                    button.disabled = reservation.status !== 'Confirmed';
+
+                    button.addEventListener('click', () => {
+                        if (reservation.status === 'Confirmed') {
+                            fetch(`/cancel_reservation/${reservation.id}`, {method: 'POST'})
+                                .then(response => response.json())
+                                .then(result => {
+                                    if (result.success) {
+                                        // Update the UI after cancellation
+                                        reservation.status = 'Cancelled';
+                                        button.disabled = true;
+                                        button.textContent = 'Cancelled';
+                                        card.querySelector('.reservation-status').textContent = 'Status: Cancelled';
+                                    }
+                                });
+                        }
+                    });
+
+                    card.appendChild(button);
+                    container.appendChild(card);
+                });
+            });
+    });
+
+</script>
+
+</body>
+
+</html>

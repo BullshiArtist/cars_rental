@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Reservation</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/cart.css">
+</head>
+
+<body>
+<header class="header" data-header>
+    <div class="container">
+        <div class="overlay" data-overlay></div>
+        <a href="/go_index" class="logo">
+            <img src="/static/images/logo.svg" alt="logo" width="42" height="42">
+        </a>
+        <nav class="navbar" data-navbar>
+            <ul class="navbar-list">
+                <li><a href="/home" class="navbar-link" data-nav-link>Home</a></li>
+                <li><a href="/explore_cars" class="navbar-link" data-nav-link>Explore cars</a></li>
+                <li><a href="/reservation" class="navbar-link" data-nav-link>Reservation</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn" aria-labelledby="aria-label-txt">
+                <span id="aria-label-txt">Log out</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="basket">
+        <div class="basket-labels">
+            <ul>
+                <li class="item item-heading">Item</li>
+                <li class="price">Price / day</li>
+                <li class="color">Color</li>
+            </ul>
+        </div>
+        <div class="basket-product">
+            <div class="item">
+                <div class="product-image">
+                    <img id="car_image" src="{{ car.picture or 'http://placehold.it/120x166' }}" alt="Car Image" class="product-frame">
+                </div>
+                <div class="product-details">
+                    <h1><span id="brand">{{ car.brand }}</span> <span id="model">{{ car.model }}</span></h1>
+                    <p id="year">{{ car.year }}</p>
+                </div>
+            </div>
+            <div class="price" id="price">{{ car.price }}</div>
+            <div class="color" id="color">{{ car.color }}</div>
+        </div>
+    </div>
+    <aside>
+        <div class="summary">
+            <form id="reservationForm" method="POST" action="/add_reservation">
+                <input type="hidden" name="car_id" value="{{ car.id }}">
+                <div class="summary-delivery" id="start_data">
+                    <p>Start Date</p>
+                    <input type="date" id="start_date" name="start_date" class="summary-delivery-selection">
+                </div>
+                <div class="summary-delivery" id="end_date">
+                    <p>End Date</p>
+                    <input type="date" id="end_date_input" name="end_date" class="summary-delivery-selection">
+                </div>
+                <div class="summary-delivery">
+                    <p>Total Days</p>
+                    <p id="total_days">0</p>
+                </div>
+                <div class="summary-checkout">
+                    <button type="submit" class="checkout-cta">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </aside>
+</main>
+
+<script>
+    // Function to calculate total days between start and end date
+    function calculateTotalDays() {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (!startDateInput.value || !endDateInput.value) {
+            totalDaysElement.textContent = 0; // Ensure the total days reset if dates are incomplete
+            return;
+        }
+
+        if (endDate >= startDate) {
+            const timeDiff = endDate - startDate;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            totalDaysElement.textContent = daysDiff;
+        } else {
+            totalDaysElement.textContent = 0;
+        }
+    }
+
+    // Function to validate the start and end dates before checkout
+    function validateCheckout() {
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+
+        if (!startDate || !endDate) {
+            alert("Please select both a start and end date.");
+            return false;
+        }
+
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
+
+        if (endDateObj < startDateObj) {
+            alert("End date cannot be earlier than the start date. Please correct your selection.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Calculate total days on date change
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date_input');
+    const totalDaysElement = document.getElementById('total_days');
+    const checkoutButton = document.querySelector('.checkout-cta');
+
+    startDateInput.addEventListener("change", calculateTotalDays);
+    endDateInput.addEventListener("change", calculateTotalDays);
+
+    // Validate dates and prevent checkout if validation fails
+    checkoutButton.addEventListener("click", function (event) {
+        if (!validateCheckout()) {
+            event.preventDefault(); // Prevent the default action if validation fails
+        }
+    });
+</script>
+</body>
+
+</html>

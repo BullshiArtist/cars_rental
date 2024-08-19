@@ -1,0 +1,61 @@
+.reservation-container {
+    max-width: 800px;
+    margin: 90px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reservation-card {
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reservation-details {
+    flex-grow: 1;
+}
+
+.reservation-status {
+    font-weight: bold;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background-color: #ff6666;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background: hsl(204, 91%, 53%);
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cancel-btn:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.cancel-btn, .edit-btn {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 30px;
+
+    text-align: center; /* Center text inside the button */
+    font-size: 16px; /* Same font size for both buttons */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+}

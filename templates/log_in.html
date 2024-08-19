@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="/static/css/log_in.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" method="post" action="{{ url_for('log_in') }}">
+            <input type="text" name="username" placeholder="username" required/>
+            <input type="password" name="password" placeholder="password" required/>
+            <button type="submit">login</button>
+            <p class="message">Not registered? <a href="{{ url_for('sign_up') }}">Create an account</a></p>
+        </form>
+    </div>
+</div>
+</body>
+</html>

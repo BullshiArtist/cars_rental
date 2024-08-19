@@ -1,0 +1,105 @@
+/* car_details.css */
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Car Details */
+.car-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rent-button {
+  margin-left: 200px;
+}
+
+.car-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.car-image-column,
+.car-info-column {
+    flex: 1;
+    padding: 20px;
+}
+
+.car-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.car-image {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.car-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.car-price {
+    font-size: 2rem;
+    color: #ff6b6b;
+    margin-bottom: 15px;
+}
+
+.car-description p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.rent-button {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.rent-button:hover {
+    background-color: #ff4c4c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .car-grid {
+        flex-direction: column;
+    }
+
+    .car-title {
+        font-size: 2rem;
+    }
+
+    .car-price {
+        font-size: 1.5rem;
+    }
+
+    .car-description p {
+        font-size: 0.9rem;
+    }
+
+    .rent-button {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1rem;
+    }
+}

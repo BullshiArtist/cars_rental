@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Reservation</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/edit_reservation.css">
+</head>
+
+<body>
+
+<header class="header" data-header>
+    <div class="container">
+
+        <div class="overlay" data-overlay></div>
+
+        <a href="/go_index" class="logo">
+            <img src="/static/images/logo.svg" alt="logo" width="42" height="42">
+        </a>
+
+        <nav class="navbar" data-navbar>
+            <ul class="navbar-list">
+                <li>
+                    <a href="/dashboard" class="navbar-link" data-nav-link>Home</a>
+                </li>
+                <li>
+                    <a href="/car_management" class="navbar-link" data-nav-link>Explore cars</a>
+                </li>
+                <li>
+                    <a href="/reservation_manage" class="navbar-link" data-nav-link>Reservation</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn" aria-labelledby="aria-label-txt">
+                <span id="aria-label-txt">Log out</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+<main>
+    <section class="section edit-reservation">
+        <div class="container">
+            <h2>Edit Reservation</h2>
+
+            <div class="edit-reservation-container">
+                <form id="edit-reservation-form" method="POST" action="/update_reservation/{{ reservation['id'] }}">
+                    <label for="car">Car:</label>
+                    <select id="car" name="car_id" required>
+                        {% for car in cars %}
+                            <option value="{{ car['id'] }}" {{ 'selected' if car['id'] == reservation['car_id'] else '' }}>
+                                {{ car['brand'] }} {{ car['model'] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" name="start_date" value="{{ reservation['start_date'] }}"
+                           required>
+
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="end_date" value="{{ reservation['end_date'] }}" required>
+
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="Confirmed" {{ 'selected' if reservation['status'] == 'Confirmed' else '' }}>
+                            Confirmed
+                        </option>
+                        <option value="Finished" {{ 'selected' if reservation['status'] == 'Finished' else '' }}>
+                            Finished
+                        </option>
+                        <option value="Cancelled" {{ 'selected' if reservation['status'] == 'Cancelled' else '' }}>
+                            Cancelled
+                        </option>
+                    </select>
+
+                    <button type="submit">Update Reservation</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('edit-reservation-form');
+        const confirmedCount = {{ confirmed_count|tojson }};
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+
+        form.addEventListener('submit', function (event) {
+            const statusSelect = document.getElementById('status');
+            const selectedStatus = statusSelect.value;
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (selectedStatus === 'Confirmed' && confirmedCount > 0) {
+                event.preventDefault();  // Prevent form submission
+                alert("This user already has a confirmed reservation. Please cancel or modify the existing one before confirming a new reservation.");
+                return;
+            }
+
+            if (startDate >= endDate) {
+                event.preventDefault();  // Prevent form submission
+                alert("The start date must be earlier than the end date.");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

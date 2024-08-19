@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Car</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/edit_car.css">
+</head>
+
+<body>
+
+<header class="header" data-header>
+    <div class="container">
+
+        <div class="overlay" data-overlay></div>
+
+        <a href="/go_index" class="logo">
+            <img src="/static/images/logo.svg" alt="logo" width="42" height="42">
+        </a>
+
+        <nav class="navbar" data-navbar>
+            <ul class="navbar-list">
+
+                <li>
+                    <a href="/dashboard" class="navbar-link" data-nav-link>Home</a>
+                </li>
+
+                <li>
+                    <a href="/car_management" class="navbar-link" data-nav-link>Explore cars</a>
+                </li>
+
+                <li>
+                    <a href="/reservation_manage" class="navbar-link" data-nav-link>Reservation</a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn" aria-labelledby="aria-label-txt">
+                <span id="aria-label-txt">Log out</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+<main>
+    <section class="section edit-car">
+        <div class="container">
+            <h2>Add New Car</h2>
+
+            <div class="edit-car-container">
+                <form id="add-car-form" method="POST" action="/add_car" enctype="multipart/form-data">
+                    <label for="brand">Brand:</label>
+                    <input type="text" id="brand" name="brand" required>
+
+                    <label for="model">Model:</label>
+                    <input type="text" id="model" name="model" required>
+
+                    <label for="year">Year:</label>
+                    <input type="number" id="year" name="year" required>
+
+                    <label for="color">Color:</label>
+                    <input type="text" id="color" name="color">
+
+                    <label for="capacity">Capacity:</label>
+                    <input type="number" id="capacity" name="capacity" required>
+
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="Electric">Electric</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Gasoline">Gasoline</option>
+                    </select>
+
+                    <label for="transmission">Transmission:</label>
+                    <select id="transmission" name="transmission" required>
+                        <option value="Automatic">Automatic</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+
+                    <label for="consumption">Consumption (km/litre):</label>
+                    <input type="number" id="consumption" name="consumption" required>
+
+                    <label for="power">Power (hp):</label>
+                    <input type="number" id="power" name="power" required>
+
+                    <label for="price">Price (per month):</label>
+                    <input type="number" id="price" name="price" required>
+
+                    <!-- Image Upload Field -->
+                    <label for="picture">Upload Car Picture:</label>
+                    <input type="file" id="picture" name="picture" accept="image/*" onchange="previewImage(event)">
+
+                    <button type="submit">Add Car</button>
+                </form>
+
+                <!-- Car Image Preview -->
+                <div class="car-image">
+                    <img id="car-image-preview" alt="Car Image Preview" />
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const preview = document.getElementById('car-image-preview');
+            preview.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    document.getElementById('add-car-form').addEventListener('submit', function(event) {
+        const requiredFields = ['brand', 'model', 'year', 'capacity', 'type', 'transmission', 'consumption', 'power', 'price'];
+        let valid = true;
+        requiredFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+                valid = false;
+                input.style.border = '1px solid red';
+            } else {
+                input.style.border = '';
+            }
+        });
+
+        if (!valid) {
+            alert('Please fill in all required fields.');
+            event.preventDefault();
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/car_details.css">
+</head>
+
+<body>
+
+<header class="header" data-header>
+    <div class="container">
+
+        <div class="overlay" data-overlay></div>
+
+        <a href="/go_index" class="logo">
+            <img src="/static/images/logo.svg" alt="logo" width="42" height="42">
+        </a>
+
+        <nav class="navbar" data-navbar>
+            <ul class="navbar-list">
+                <li>
+                    <a href="/home" class="navbar-link" data-nav-link>Home</a>
+                </li>
+
+                <li>
+                    <a href="/explore_cars" class="navbar-link" data-nav-link>Explore cars</a>
+                </li>
+
+                <li>
+                    <a href="/reservation" class="navbar-link" data-nav-link>Reservation</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn" aria-labelledby="aria-label-txt">
+                <span id="aria-label-txt">Log out</span>
+            </a>
+        </div>
+
+    </div>
+</header>
+
+<main>
+    <div class="car-container">
+        <div class="car-grid">
+            <div class="car-image-column">
+                <div class="car-image-gallery">
+                    <!-- Car Image -->
+                    <div class="car-image-wrapper">
+                        <img class="car-image active"
+                             src="data:image/jpeg;base64,{{ car['picture'] }}"
+                             alt="{{ car['brand'] }} {{ car['model'] }}">
+                    </div>
+                </div>
+            </div>
+            <div class="car-info-column">
+                <!-- Car Brand and Model -->
+                <h1 class="car-title">{{ car['brand'] }} {{ car['model'] }}</h1>
+                <!-- Car Price -->
+                <h2 class="car-price">${{ car['price'] }} / day</h2>
+                <!-- Dynamic Description -->
+                <div class="car-description">
+                    <p>This {{ car['brand'] }} {{ car['model'] }} from the year {{ car['year'] }} is a fantastic choice
+                        for anyone looking for a reliable and stylish vehicle. It features a {{ car['transmission'] }}
+                        transmission, {{ car['type'] }} engine, and seats up to {{ car['capacity'] }} passengers.
+                        Perfect for your next adventure.</p>
+                    <p>With its {{ car['color'] }} exterior, this car offers a balance of power, performance, and fuel
+                        efficiency with a consumption rate of {{ car['consumption'] }} liters per 100km.</p>
+                </div>
+                <!-- Rent Button -->
+                <a href="/rent_car/{{ car['id'] }}">
+                    <button class="rent-button">Rent</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

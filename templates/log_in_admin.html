@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Log in</title>
+    <link rel="stylesheet" href="/static/css/log_in.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <p>Admin Log in</p>
+        <form class="login-form" method="post" action="{{ url_for('admin_login') }}">
+            <input type="text" name="username" placeholder="username" required/>
+            <input type="password" name="password" placeholder="password" required/>
+            <button type="submit">login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
