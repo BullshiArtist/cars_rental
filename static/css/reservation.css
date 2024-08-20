@@ -59,3 +59,44 @@
     font-size: 16px; /* Same font size for both buttons */
     box-sizing: border-box; /* Include padding in the element's total width and height */
 }
+
+/* Flash Message Styling */
+.alert {
+    max-width: 800px;
+    margin: 81px auto 20px auto;
+    padding: 15px;
+    background-color: #e0f7fa; /* Light blue background */
+    border-left: 5px solid #00796b; /* Teal left border for emphasis */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #00796b; /* Teal text color */
+    font-size: 16px;
+}
+
+.alert ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert li {
+    margin: 5px 0;
+}
+
+.alert.success {
+    background-color: #e8f5e9; /* Light green background for success */
+    border-left-color: #43a047; /* Darker green border for success */
+    color: #43a047;
+}
+
+.alert.error {
+    background-color: #ffebee; /* Light red background for error */
+    border-left-color: #e53935; /* Darker red border for error */
+    color: #e53935;
+}
+
+.alert.warning {
+    background-color: #fff8e1; /* Light yellow background for warning */
+    border-left-color: #ffb300; /* Orange border for warning */
+    color: #ffb300;
+}

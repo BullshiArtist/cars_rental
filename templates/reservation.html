@@ -54,9 +54,6 @@
 
 
 <main>
-    <div class="reservation-container" id="reservationContainer">
-        <!-- Reservations will be dynamically loaded here -->
-    </div>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="alert">
@@ -68,6 +65,9 @@
             </div>
         {% endif %}
     {% endwith %}
+    <div class="reservation-container" id="reservationContainer">
+        <!-- Reservations will be dynamically loaded here -->
+    </div>
 </main>
 
 <script>
