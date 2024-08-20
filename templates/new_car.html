@@ -65,7 +65,7 @@
                     <input type="number" id="year" name="year" required>
 
                     <label for="color">Color:</label>
-                    <input type="text" id="color" name="color">
+                    <input type="text" id="color" name="color" required>
 
                     <label for="capacity">Capacity:</label>
                     <input type="number" id="capacity" name="capacity" required>
@@ -118,9 +118,25 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    document.getElementById('add-car-form').addEventListener('submit', function(event) {
-        const requiredFields = ['brand', 'model', 'year', 'capacity', 'type', 'transmission', 'consumption', 'power', 'price'];
+    // Function to validate the year input
+    function validateYear() {
+        const yearInput = document.getElementById('year');
+        const year = parseInt(yearInput.value);
+
+        if (year < 1901 || year > 2155 || isNaN(year)) {
+            alert("Please enter a valid year between 1901 and 2155.");
+            yearInput.style.border = '1px solid red'; // Highlight the input
+            return false; // Prevent form submission
+        }
+        yearInput.style.border = ''; // Clear the red border if valid
+        return true; // Allow form submission
+    }
+
+    document.getElementById('add-car-form').addEventListener('submit', function (event) {
+        const requiredFields = ['brand', 'model', 'year', 'capacity', 'type', 'color', 'transmission', 'consumption', 'power', 'price'];
         let valid = true;
+
+        // Check if all required fields are filled
         requiredFields.forEach(field => {
             const input = document.getElementById(field);
             if (!input.value.trim()) {
@@ -131,9 +147,15 @@
             }
         });
 
+        // Validate the year field separately
+        if (!validateYear()) {
+            valid = false;
+        }
+
+        // If any validation fails, prevent form submission
         if (!valid) {
-            alert('Please fill in all required fields.');
             event.preventDefault();
+            alert('Please correct the highlighted fields.');
         }
     });
 </script>
