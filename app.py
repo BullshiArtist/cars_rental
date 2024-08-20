@@ -315,7 +315,7 @@ def add_reservation():
         if confirmed_reservation:
             # Redirect to the page specific for confirmed reservations
             flash("You already have one reservation now, Please cancel it first.")
-            return redirect(url_for('rent_car', car_id=car_id))
+            return redirect(url_for('reservation'))
         else:
 
             # Insert the reservation into the database
